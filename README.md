@@ -1,14 +1,18 @@
-## Next.js/React Code challenge
--- Purpose
+<h1>Next.js/React Code challenge</h1>
+
+## Purpose
 Illustrate you have a solid grasp of the fundamentals required to create a react/next.js based application by building a simple multi-route SPA using the Open Brewery DB API (https://www.openbrewerydb.org/documentation/01-listbreweries).
 
--- Expectations
+## Expectations
+
 ATK does have its own design and UI team so we don't expect a pixel-perfect design but we do expect that you'll have a solid understanding of page composition, accessibility, and proper markup. Your application will be created in a compressed timeframe (we suggest 4-5 hrs but please no more than 6-8 hrs) so we don't expect a work of art or a magnificent feat of engineering. Your app should interact with the API in a way that provides the user with a reasonable browsing and discovery experience.
 
 Get as much done as you can, but don't worry if you don't finish it all in the allotted time. We're looking at how you organize your code, manage API requests and structure your markup. We'd prefer 50% done with 100% great code, markup, and layout than 100% done with a rushed implementation and inaccessible markup.
 
--- Requirements
+## Requirements
+
  Getting started
+
 Create an empty public repo on GitHub.
 https://nextjs.org/docs <-- use create-next-app to lay the foundation. Choose typescript or javascript, either is fine.
 Peruse the Open Brewery DB API
