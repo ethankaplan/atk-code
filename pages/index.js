@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-
+//import styles from '../styles/Home.module.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Grid, Container, Row, Col, Card} from 'react-bootstrap';
 import React, {Component} from 'react'
 
 export default class Home extends Component {
@@ -10,75 +11,71 @@ state={
   list:{}
 }
 
+componentDidMount(){
+  fetch(`https://api.openbrewerydb.org/breweries/?page=${this.getRandomInt(393)}`)
+  .then((response) => response.json())
+  .then(data => this.setState({
+    feat:data[this.getRandomInt(20)]
+  }))
+  
+  }
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 
 
 
 render(){
   return (
-    <div className={styles.container}>
+    <Container  >
+
       <Head>
         <title>Brew Finder App</title>
         <meta name="description" content="wow look at all these places to get a cold one" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      
+      <main className="justify-content-md-center">
+        
+        <Container className="text-center">
+        <Row>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+        <h1>
           Brewery Finder 
         </h1>
+        </Row>
+
         <small>neato</small>
+        </Container>
+        <Container style={{marginLeft:"auto"},{marginRight:"auto"}} className="text-center">
         <div>
-        <h2>Featured Brewery</h2>
-        <div className={styles.grid}>
-        
+        <h2 className="text-center">Featured Brewery</h2>
+        {/*featured card*/}
+
+        <Card style={{ width: '100px'},{margin:"auto"}}>
+          <Card.Body>
+            <Card.Title>{this.state.feat.name}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">{this.state.feat.street}</Card.Subtitle>
+            <Card.Subtitle className="mb-2">{this.state.feat.city}, {this.state.feat.state}</Card.Subtitle>
+            <Card.Text>
+              
+            </Card.Text>
+            
+            <Card.Link href={this.state.feat.website_url}>Brewery Website</Card.Link>
+          </Card.Body>
+        </Card>
 
         </div>
-        </div>
-        
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        </Container>
+        <p/>
+        <h2>Other Breweries</h2>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
+      <footer >
+       </footer>
+    </Container>
   )
 }
 }
