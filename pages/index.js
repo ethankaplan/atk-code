@@ -4,12 +4,14 @@ import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Grid, Container, Row, Col, Card, Button, ButtonGroup, Dropdown, Accordion } from 'react-bootstrap';
 import React, {Component} from 'react'
+import {Feature} from './feature'
 
 export default class Home extends Component {
 state={
   feat:{},
   list:[{}],
-  activeItem:""
+  activeItem:"micro",
+  loopstop:false
 }
 filters =[
   {name:"micro"},
@@ -31,31 +33,42 @@ componentDidMount(){
   .then((response) => response.json())
   .then(data => this.setState({
     feat:data[this.getRandomInt(20)],
-    list:data
+    
   }))
-  
+  this.getSearch()
   }
   getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
 
+getSearch(){
+  
+  fetch(`https://api.openbrewerydb.org/breweries?by_type=${this.state.activeItem}`)
+  .then((response) => response.json())
+  .then(data => this.setState({
+    list:data,
+    loopstop:true
+  }))
+}
+componentDidUpdate(){
+  if(this.state.loopstop==false){
+    this.getSearch()
+    
+  }
+}
+
   handleItemClick = (e) => {
 
         this.setState({ activeItem: e.target.name,
-                        list:[{}]})
-          }
-        ;
-  componentDidUpdate(){
-    fetch(`https://api.openbrewerydb.org/breweries?by_type=${this.state.activeItem}`)
-          .then((response) => response.json())
-          .then(data => this.setState({
-            list:data
-          }))
+                        loopstop:false
+                        })
+       
   }
+  
 
 render(){
   return (
-    <Container  >
+    <Container>
 
       <Head>
         <title>Brew Finder App</title>
@@ -63,7 +76,7 @@ render(){
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <main className="justify-content-md-center">
+      <main >
         
         <Container className="text-center">
         <Row>
@@ -72,63 +85,55 @@ render(){
           Brewery Finder 
         </h1>
         </Row>
-
         <small>neato</small>
         </Container>
-        <Container style={{marginLeft:"auto"},{marginRight:"auto"}} className="text-center">
+        
+        <Container  className="text-center">
         <div>
         <h2 className="text-center">Featured Brewery</h2>
         {/*featured card*/}
 
-        <Card style={{ width: '18rem'},{margin:"auto"},{border:"0"}}>
+        <Card style={{ width: '18rem',margin:"auto",border:"0"}}>
           <Card.Body>
             <Card.Title>{this.state.feat.name}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted"> {this.state.feat.street} </Card.Subtitle>
             <Card.Subtitle className="mb-2">{this.state.feat.city}, {this.state.feat.state}</Card.Subtitle>
-            <Card.Text>
-              
-            </Card.Text>
-            
-            <Card.Link href={this.state.feat.website_url}>Brewery Website</Card.Link>
+            {this.state.feat.brewery_type?<Card.Text>It's a {this.state.feat.brewery_type} kind of place</Card.Text>:""}
           </Card.Body>
         </Card>
-
+      
+      {/*<Feature/>*/}
         </div>
         </Container>
         <p/>
         <h2>Other Breweries</h2>
-        <Row xs={2} md={3}>
-          <ButtonGroup>  
+        <Row>
+          
         {this.filters.map((filter,key) => (
   
           
-          <Col><Button style={{textTransform:"capitalize"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
+          <Col xs={6} md={4} xl={3}><Button style={{textTransform:"capitalize", width:"10rem"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
           
           
         ))}
-        </ButtonGroup>
+        
         
         </Row>
 
-        <Container fluid>
+        
+
+        <Row>
         {this.state.list.map((list,key) => (
-          <Card style={{ width: '18rem'},{margin:"auto"},{border:"0"}}>
-          <Card.Body>
+          <Col xs={6} md={4} xl={3}>
+          <Card style={{border:"0"}}>
+          <Card.Body >
               <Card.Title>{list.name}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted"> {list.street} </Card.Subtitle>
               <Card.Subtitle className="mb-2">{list.city}, {list.state}</Card.Subtitle>
-              <Card.Text>
-                
-              </Card.Text>
-            
-            <Card.Link href={list.website_url}>Brewery Website</Card.Link>
           </Card.Body>
         </Card>
-
-
+        </Col>
         ))}
-
-        </Container>
+        </Row>
 
 
         

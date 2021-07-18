@@ -20,7 +20,7 @@ class term extends Component {
         .then(data => this.setState({
           brews:data
         }))
-        
+        console.log(this.state.brews)
         }
     
     render(){
@@ -28,7 +28,7 @@ class term extends Component {
         return (
             <div>
 
-        {this.state.brews.map((brew,index) => (
+        {this.state.brews.map((brew,key) => (
           <Col>{brew.name}</Col>
         ))}
             </div>

@@ -4,16 +4,15 @@ import { Col, Card, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-export default function id({ searchResults }) {
+export default function Term({ searchResults }) {
   const router = useRouter();
 
  const [search, setSearch] = useState(searchResults);
   useEffect(() => {
     async function loadData() {
-      const id = await fetch('https://api.openbrewerydb.org/breweries/'
-      +query.id);
+      const response = await fetch('https://api.openbrewerydb.org/breweries/search?query='
+      +query.term);
       const searchResults = await response.json();
-      console.log(searchResults)
       setSearch(searchResults);
     }
 
@@ -40,15 +39,15 @@ export default function id({ searchResults }) {
 
 
 
-id.getInitialProps = async ctx => {
+Term.getInitialProps = async ctx => {
     if(!ctx.req) {
         return { searchResults: [] };
     }
 
   const { query } = ctx;
   const response = await fetch(
-    'https://api.openbrewerydb.org/breweries/' +
-      query.id 
+    'https://api.openbrewerydb.org/breweries/search?query=' +
+      query.term 
   );
   const searchResults = await response.json();
   return { searchResults: searchResults };
