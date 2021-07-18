@@ -4,7 +4,7 @@ import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Grid, Container, Row, Col, Card, Button, ButtonGroup, Dropdown, Accordion } from 'react-bootstrap';
 import React, {Component} from 'react'
-import {Feature} from './feature'
+import Feature from './feature'
 
 export default class Home extends Component {
 state={
@@ -29,12 +29,12 @@ filters =[
 
 
 componentDidMount(){
-  fetch(`https://api.openbrewerydb.org/breweries/?page=${this.getRandomInt(393)}`)
+  {/*fetch(`https://api.openbrewerydb.org/breweries/?page=${this.getRandomInt(393)}`)
   .then((response) => response.json())
   .then(data => this.setState({
     feat:data[this.getRandomInt(20)],
     
-  }))
+  }))*/}
   this.getSearch()
   }
   getRandomInt(max) {
@@ -92,7 +92,9 @@ render(){
         <div>
         <h2 className="text-center">Featured Brewery</h2>
         {/*featured card*/}
+        <Feature/>
 
+        {/* Original card, in case something breaks
         <Card style={{ width: '18rem',margin:"auto",border:"0"}}>
           <Card.Body>
             <Card.Title>{this.state.feat.name}</Card.Title>
@@ -100,9 +102,9 @@ render(){
             <Card.Subtitle className="mb-2">{this.state.feat.city}, {this.state.feat.state}</Card.Subtitle>
             {this.state.feat.brewery_type?<Card.Text>It's a {this.state.feat.brewery_type} kind of place</Card.Text>:""}
           </Card.Body>
-        </Card>
+        </Card>*/}
       
-      {/*<Feature/>*/}
+      
         </div>
         </Container>
         <p/>

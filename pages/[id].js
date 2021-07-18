@@ -1,55 +1,65 @@
+//I'm unsure how to have this be used on the main page, but this uses more stuff that nextjs uses
+
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Col, Card, Row } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-export default function id({ searchResults }) {
+export default function Id({ featResult, simRes }) {
   const router = useRouter();
 
- const [search, setSearch] = useState(searchResults);
+ const [feat, setFeat] = useState(featResult);
+ const [sim,setSim] = useState(simRes)
   useEffect(() => {
     async function loadData() {
-      const id = await fetch('https://api.openbrewerydb.org/breweries/'
-      +query.id);
-      const searchResults = await response.json();
-      console.log(searchResults)
-      setSearch(searchResults);
+      
+      const response = await fetch(`https://api.openbrewerydb.org/breweries/${router.query.id}}`)
+      const featResult = await response.json();
+    
+      setFeat(featResult);
+      const simResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_dist=${feat.latitude},${feat.longitude}&per_page=12`)
+      const simRes = await simResponse.json()
+      console.log(simRes)
+      setSim(simRes)
     }
 
-    if(search.length == 0) {
+    if(feat.length == 0) {
         loadData();
     }
   }, []);
 
-  if(!search[0]) { 
-      return <div>loading...</div>
+  if(!feat.name) { 
+      return <div style={{margin:"auto"}}>loading...</div>
   }
 
-  return <Row>{search.map((brew,key) => (
-    <Col xs={6} md={4} xl={3}>
-        <Card style={{border:"0"}}>
-          <Card.Body >
-              <Card.Title>{brew.name}</Card.Title>
-              <Card.Subtitle className="mb-2">{brew.city}, {brew.state}</Card.Subtitle>
-          </Card.Body>
-        </Card>
-    </Col>
-  ))}</Row>
+  return(      
+        <Card style={{ width: '18rem',margin:"auto",border:"0"}}>
+          <Card.Body>
+           <Card.Title>{feat.name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted"> {feat.street} </Card.Subtitle>
+          <Card.Subtitle className="mb-2">{feat.city}, {feat.state}</Card.Subtitle>
+          <Card.Link href={feat.website_url}>Brewery Website</Card.Link>
+        </Card.Body>
+      </Card>
+  )
 }
 
 
 
-id.getInitialProps = async ctx => {
+Id.getInitialProps = async ctx => {
     if(!ctx.req) {
-        return { searchResults: [] };
+        return { featResult: [] };
     }
 
   const { query } = ctx;
   const response = await fetch(
-    'https://api.openbrewerydb.org/breweries/' +
-      query.id 
+    'https://api.openbrewerydb.org/breweries/search?query=' +
+      query.term 
   );
-  const searchResults = await response.json();
-  return { searchResults: searchResults };
+  const featResult = await response.json();
+  return { featResult: featResult };
 };
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }

@@ -6,14 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Term({ searchResults }) {
   const router = useRouter();
-
+  
  const [search, setSearch] = useState(searchResults);
   useEffect(() => {
     async function loadData() {
       const response = await fetch('https://api.openbrewerydb.org/breweries/search?query='
-      +query.term);
+      +router.query.term);
       const searchResults = await response.json();
       setSearch(searchResults);
+      
     }
 
     if(search.length == 0) {
@@ -45,10 +46,12 @@ Term.getInitialProps = async ctx => {
     }
 
   const { query } = ctx;
+  
   const response = await fetch(
     'https://api.openbrewerydb.org/breweries/search?query=' +
       query.term 
   );
+  console.log("query "+query)
   const searchResults = await response.json();
   return { searchResults: searchResults };
 };

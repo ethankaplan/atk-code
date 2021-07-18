@@ -1,3 +1,5 @@
+//I'm unsure how to have this be used on the main page, but this uses more stuff that nextjs uses
+
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
@@ -11,22 +13,22 @@ export default function Feat({ featResult }) {
     async function loadData() {
       const response = await fetch(`https://api.openbrewerydb.org/breweries/?page=${getRandomInt(393)}`)
       const featResult = await response.json();
-    
+      console.log(featResult)
       setFeat(featResult[getRandomInt(20)]);
     
     }
-
-    if(feat.length == 0) {
+    
+    if(!feat) {
         loadData();
     }
   }, []);
 
-  if(!feat.name) { 
+  if(!feat) { 
       return <div style={{margin:"auto"}}>loading...</div>
   }
 
   return(      
-        <Card style={{ width: '18rem',margin:"auto",border:"0"}}>
+        <Card style={{ width: '18rem',margin:"auto"}}>
           <Card.Body>
            <Card.Title>{feat.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted"> {feat.street} </Card.Subtitle>
