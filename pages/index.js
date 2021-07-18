@@ -8,7 +8,7 @@ import React, {Component} from 'react'
 export default class Home extends Component {
 state={
   feat:{},
-  list:{},
+  list:[{}],
   activeItem:""
 }
 filters =[
@@ -30,7 +30,8 @@ componentDidMount(){
   fetch(`https://api.openbrewerydb.org/breweries/?page=${this.getRandomInt(393)}`)
   .then((response) => response.json())
   .then(data => this.setState({
-    feat:data[this.getRandomInt(20)]
+    feat:data[this.getRandomInt(20)],
+    list:data
   }))
   
   }
@@ -38,8 +39,19 @@ componentDidMount(){
     return Math.floor(Math.random() * max);
   }
 
-  handleItemClick = (e) => this.setState({ activeItem: e.target.name });
+  handleItemClick = (e) => {
 
+        this.setState({ activeItem: e.target.name,
+                        list:[{}]})
+          }
+        ;
+  componentDidUpdate(){
+    fetch(`https://api.openbrewerydb.org/breweries?by_type=${this.state.activeItem}`)
+          .then((response) => response.json())
+          .then(data => this.setState({
+            list:data
+          }))
+  }
 
 render(){
   return (
@@ -87,14 +99,36 @@ render(){
         <h2>Other Breweries</h2>
         <Row xs={2} md={3}>
           <ButtonGroup>  
-        {this.filters.map((filter,index) => (
-          <Col><Button  variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} onClick={this.handleItemClick}>{filter.name}</Button></Col>
+        {this.filters.map((filter,key) => (
+  
+          
+          <Col><Button style={{textTransform:"capitalize"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
+          
+          
         ))}
         </ButtonGroup>
         
         </Row>
 
-    
+        <Container fluid>
+        {this.state.list.map((list,key) => (
+          <Card style={{ width: '18rem'},{margin:"auto"},{border:"0"}}>
+          <Card.Body>
+              <Card.Title>{list.name}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted"> {list.street} </Card.Subtitle>
+              <Card.Subtitle className="mb-2">{list.city}, {list.state}</Card.Subtitle>
+              <Card.Text>
+                
+              </Card.Text>
+            
+            <Card.Link href={list.website_url}>Brewery Website</Card.Link>
+          </Card.Body>
+        </Card>
+
+
+        ))}
+
+        </Container>
 
 
         
