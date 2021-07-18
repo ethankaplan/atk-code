@@ -2,14 +2,29 @@ import Head from 'next/head'
 import Image from 'next/image'
 //import styles from '../styles/Home.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Grid, Container, Row, Col, Card} from 'react-bootstrap';
+import {Grid, Container, Row, Col, Card, Button, ButtonGroup, Dropdown, Accordion } from 'react-bootstrap';
 import React, {Component} from 'react'
 
 export default class Home extends Component {
 state={
   feat:{},
-  list:{}
+  list:{},
+  activeItem:""
 }
+filters =[
+  {name:"micro"},
+  {name:"nano"},
+  {name:"regional"},
+  {name:"brewpub"},
+  {name:"large"},
+  {name:"planning"},
+  {name:"bar"},
+  {name:"contract"},
+  {name:"proprietor"},
+  {name:"closed"}
+
+]
+
 
 componentDidMount(){
   fetch(`https://api.openbrewerydb.org/breweries/?page=${this.getRandomInt(393)}`)
@@ -23,6 +38,7 @@ componentDidMount(){
     return Math.floor(Math.random() * max);
   }
 
+  handleItemClick = (e) => this.setState({ activeItem: e.target.name });
 
 
 render(){
@@ -52,10 +68,10 @@ render(){
         <h2 className="text-center">Featured Brewery</h2>
         {/*featured card*/}
 
-        <Card style={{ width: '100px'},{margin:"auto"}}>
+        <Card style={{ width: '18rem'},{margin:"auto"},{border:"0"}}>
           <Card.Body>
             <Card.Title>{this.state.feat.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{this.state.feat.street}</Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted"> {this.state.feat.street} </Card.Subtitle>
             <Card.Subtitle className="mb-2">{this.state.feat.city}, {this.state.feat.state}</Card.Subtitle>
             <Card.Text>
               
@@ -69,7 +85,21 @@ render(){
         </Container>
         <p/>
         <h2>Other Breweries</h2>
+        <Row xs={2} md={3}>
+          <ButtonGroup>  
+        {this.filters.map((filter,index) => (
+          <Col><Button  variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} onClick={this.handleItemClick}>{filter.name}</Button></Col>
+        ))}
+        </ButtonGroup>
+        
+        </Row>
 
+    
+
+
+        
+
+        
 
       </main>
 
