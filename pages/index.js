@@ -1,9 +1,12 @@
 import Head from 'next/head'
-import Image from 'next/image'
+
 //import styles from '../styles/Home.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Grid, Container, Row, Col, Card, Button, ButtonGroup, Dropdown, Accordion } from 'react-bootstrap';
 import React, {Component} from 'react'
+import Link from 'next/link'
+
+import Nav from './topbar/top'
 import Feature from './feature'
 
 export default class Home extends Component {
@@ -68,6 +71,8 @@ componentDidUpdate(){
 
 render(){
   return (
+    <div>
+      <Nav/>
     <Container>
 
       <Head>
@@ -114,7 +119,7 @@ render(){
         {this.filters.map((filter,key) => (
   
           
-          <Col xs={6} md={4} xl={3}><Button style={{textTransform:"capitalize", width:"10rem"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
+          <Col xs={6} md={4} xl={3}><Button style={{textTransform:"capitalize", width:"9rem"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
           
           
         ))}
@@ -127,12 +132,13 @@ render(){
         <Row>
         {this.state.list.map((list,key) => (
           <Col xs={6} md={4} xl={3}>
+            <Link href={`/${list.id}`}>
           <Card style={{border:"0"}}>
           <Card.Body >
               <Card.Title>{list.name}</Card.Title>
               <Card.Subtitle className="mb-2">{list.city}, {list.state}</Card.Subtitle>
           </Card.Body>
-        </Card>
+        </Card></Link>
         </Col>
         ))}
         </Row>
@@ -146,7 +152,7 @@ render(){
 
       <footer >
        </footer>
-    </Container>
+    </Container></div>
   )
 }
 }

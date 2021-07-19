@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import { Col, Card, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,12 +29,13 @@ export default function Term({ searchResults }) {
 
   return <Row>{search.map((brew,key) => (
     <Col xs={6} md={4} xl={3}>
+        <Link href={`/${brew.id}`}>
         <Card style={{border:"0"}}>
           <Card.Body >
               <Card.Title>{brew.name}</Card.Title>
               <Card.Subtitle className="mb-2">{brew.city}, {brew.state}</Card.Subtitle>
           </Card.Body>
-        </Card>
+        </Card></Link>
     </Col>
   ))}</Row>
 }
@@ -51,7 +53,7 @@ Term.getInitialProps = async ctx => {
     'https://api.openbrewerydb.org/breweries/search?query=' +
       query.term 
   );
-  console.log("query "+query)
+  
   const searchResults = await response.json();
   return { searchResults: searchResults };
 };
