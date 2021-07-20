@@ -27,8 +27,6 @@ export default function Term({ searchResults }) {
         loadData();
     }
   }, []);
-  console.log(!search[0])
-  console.log(results)
   if(!search[0]&&results) { 
       return <div><Nav/>loading...</div>
   }

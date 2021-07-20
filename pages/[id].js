@@ -18,6 +18,7 @@ export default function Id({ featResult, simResult, typeResult }) {
       const response = await fetch(`https://api.openbrewerydb.org/breweries/${router.query.id}}`)
       const featResult = await response.json();
       setFeat(featResult);
+      
       return featResult; 
     }
 
@@ -26,14 +27,10 @@ export default function Id({ featResult, simResult, typeResult }) {
       const simResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_dist=${featured.latitude},${featured.longitude}&per_page=12`)
       const simResult = await simResponse.json()
       setSim(simResult)
-      console.log(simResult)
+      
       const typeResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_type=${featured.brewery_type}&per_page=4`)
       const typResult = await typeResponse.json()
-      
-      
       setTyp(typResult)
-    
-      
     }
 
     if(feat.length == 0) {
@@ -50,7 +47,7 @@ export default function Id({ featResult, simResult, typeResult }) {
   }
 
 
-  console.log(typ)
+  
   return(      
     <div><Nav/>
         <Card style={{ width: '50%',margin:"auto",border:"0"}}  className="text-center">
@@ -66,7 +63,7 @@ export default function Id({ featResult, simResult, typeResult }) {
         </Card.Body>
       </Card>
       {/*by type*/}
-      {typ?<Container>
+      {typ&&feat.brewery_type!=null?<Container>
       
       <h3>Other {feat.brewery_type}s</h3>
 
@@ -88,7 +85,7 @@ export default function Id({ featResult, simResult, typeResult }) {
       </Container>:""}
       <p/>
       {/* similar location */}
-      {sim?<Container>
+      {sim&&feat.latitude!=null&&feat.longitude!=null?<Container>
         <h3>Breweries near {feat.name}</h3>
         <Row>
         {sim.map((sim,key)=>(

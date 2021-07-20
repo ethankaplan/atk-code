@@ -20,7 +20,7 @@ class term extends Component {
         .then(data => this.setState({
           brews:data
         }))
-        console.log(this.state.brews)
+        
         }
     
     render(){
