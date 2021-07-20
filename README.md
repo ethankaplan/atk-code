@@ -1,6 +1,9 @@
 Decided to try and learn a bit of how hooks work while I learned NextJS for this!
 Currently, as of writing, the featured brewery is random.
 
+To fix:
+Navigating to the same type of page changes URL, doesn't change page contents
+
 <h1>Next.js/React Code challenge</h1>
 
 ## Purpose
