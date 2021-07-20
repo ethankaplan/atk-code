@@ -9,6 +9,8 @@ export default function Term({ searchResults }) {
   const router = useRouter();
   
  const [search, setSearch] = useState(searchResults);
+ const [results,setRes]=useState(true)
+ 
   useEffect(() => {
     async function loadData() {
       const response = await fetch('https://api.openbrewerydb.org/breweries/search?query='
@@ -16,20 +18,24 @@ export default function Term({ searchResults }) {
       +'&per_page=24');
       const searchResults = await response.json();
       setSearch(searchResults);
-      
+      if(searchResults.length==0){
+        setRes(false)
+      }
     }
 
     if(search.length == 0) {
         loadData();
     }
   }, []);
-
-  if(!search[0]) { 
+  console.log(!search[0])
+  console.log(results)
+  if(!search[0]&&results) { 
       return <div><Nav/>loading...</div>
   }
 
-  return <div><Nav/><Row sm={12}>
-      {search.map((brew,key) => (
+  return <div><Nav/>
+      {results? <Row style={{width:"100%"}}> 
+        {search.map((brew,key) => (
         <Col xs={6} md={4} xl={3}>
             <Link href={`/${brew.id}`}>
             <Card style={{border:"0", paddingRight:"0"}}>
@@ -39,7 +45,8 @@ export default function Term({ searchResults }) {
             </Card.Body>
             </Card></Link>
         </Col>
-  ))}</Row></div>
+  ))}</Row>:<Row style={{width:"100%"}} className="justify-content-center"><p/>No results</Row>}
+  </div>
 }
 
 

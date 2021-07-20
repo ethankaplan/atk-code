@@ -1,9 +1,15 @@
 import {Navbar, Col, Row, Form, FormControl, Container } from 'react-bootstrap';
 import Link from 'next/link'
 import {useRouter} from 'next/router'
+import { useEffect } from 'react';
 export default function top() {
 
 const router=useRouter()
+
+useEffect(() => {
+   // router.reload()
+  }, []);
+
     return (
     <Navbar bg="dark" variant="dark" sticky="top">
   <Container>
