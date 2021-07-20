@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Card, Container, Row, Col, Link } from 'react-bootstrap';
+import { Card, Container, Row, Col } from 'react-bootstrap';
+import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Nav from './topbar/top'
 
@@ -17,22 +18,32 @@ export default function Id({ featResult, simResult, typeResult }) {
       const response = await fetch(`https://api.openbrewerydb.org/breweries/${router.query.id}}`)
       const featResult = await response.json();
       setFeat(featResult);
-
+      return featResult; 
     }
 
-    if(feat.length == 0) {
-        loadData() 
-    }
-  }, []);
 
-    async function loadOther(){
-      const simResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_dist=${feat.latitude},${feat.longitude}&per_page=12`)
+    async function loadOther(featured){
+      console.log(featured)
+      const simResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_dist=${featured.latitude},${featured.longitude}&per_page=12`)
       const simResult = await simResponse.json()
       setSim(simResult)
 
-      
+      const typeResponse = await fetch(`https://api.openbrewerydb.org/breweries?by_type=${featured.brewery_type}&per_page=4`)
+      const typResult = await typeResponse.json()
+      console.log(typResult)
+      if(typResult){
+      setTyp(typResult)
+    }
       
     }
+
+    if(feat.length == 0) {
+        loadData().then((featR)=>loadOther(featR));
+        
+    }
+  }, []);
+
+    
 
   if(!feat.name) {
       
@@ -56,12 +67,28 @@ export default function Id({ featResult, simResult, typeResult }) {
         </Card.Body>
       </Card>
       {/*by type*/}
-    <Container>
+      {typ?<Container>
       
       Other {feat.brewery_type}s
+
+      <Row sm={2} md={4}>
+        {typ.map((typeB,key) => (
+            
+            <Col xs={6} md={3} xl={3}>
+              <Link href={`/${typeB.id}`}>
+            <Card style={{border:"0"}}>
+            <Card.Body>
+                <Card.Title>{typeB.name}</Card.Title>
+                <Card.Subtitle className="mb-2">{typeB.city}, {typeB.state}</Card.Subtitle>
+            </Card.Body>
+          </Card></Link>
+          </Col>
+          ))}
+        </Row>
+        
+      </Container>:""}
       
-    </Container>
-      </div>
+      </div> 
   )
 }
 
@@ -78,14 +105,18 @@ Id.getInitialProps = async ctx => {
       query.term 
   );
   const featResult = await response.json();
-  const typeRes = await fetch(`https://api.openbrewerydb.org/breweries?by_type${featResult.brewery_type}&per_page=4`)
+  const typeRes = await fetch(`https://api.openbrewerydb.org/breweries?by_type=${featResult.brewery_type}&per_page=4`)
   const typeResponse = await typeRes.json();
 
   return { featResult: featResult, simResult:[] , typeResponse:typeResponse };
 };
 
 
-{/* ======================= */}
+
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 
 function formatPhoneNumber(phoneNumberString) {
     var cleaned = ('' + phoneNumberString).replace(/\D/g, '');

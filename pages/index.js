@@ -56,16 +56,13 @@ getSearch(){
 componentDidUpdate(){
   if(this.state.loopstop==false){
     this.getSearch()
-    
   }
 }
 
   handleItemClick = (e) => {
-
-        this.setState({ activeItem: e.target.name,
-                        loopstop:false
-                        })
-       
+    this.setState({ activeItem: e.target.name,
+      loopstop:false
+    })
   }
   
 
@@ -92,41 +89,21 @@ render(){
         <h2 className="text-center">Featured Brewery</h2>
         {/*featured card*/}
         <Feature/>
-
-        {/* Original card, in case something breaks
-        <Card style={{ width: '18rem',margin:"auto",border:"0"}}>
-          <Card.Body>
-            <Card.Title>{this.state.feat.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted"> {this.state.feat.street} </Card.Subtitle>
-            <Card.Subtitle className="mb-2">{this.state.feat.city}, {this.state.feat.state}</Card.Subtitle>
-            {this.state.feat.brewery_type?<Card.Text>It's a {this.state.feat.brewery_type} kind of place</Card.Text>:""}
-          </Card.Body>
-        </Card>*/}
-      
-      
         </div>
         </Container>
         <p/>
         <h2>Other Breweries</h2>
         <Row>
-          
         {this.filters.map((filter,key) => (
-  
-          
           <Col xs={6} md={4} xl={3}><Button style={{textTransform:"capitalize", width:"9rem"}} variant="outline-primary" active={this.state.activeItem==filter.name} name={filter.name} key={key} onClick={this.handleItemClick}>{filter.name}</Button></Col>
-          
-          
-        ))}
-        
-        
-        </Row>
 
-        
+        ))}
+        </Row>
 
         <Row>
         {this.state.list.map((list,key) => (
           <Col xs={6} md={4} xl={3}>
-            <Link href={`/${list.id}`}>
+          <Link href={`/${list.id}`}>
           <Card style={{border:"0"}}>
           <Card.Body >
               <Card.Title>{list.name}</Card.Title>
@@ -137,13 +114,7 @@ render(){
         ))}
         </Row>
 
-
-        
-
-        
-
       </main>
-
       <footer >
        </footer>
     </Container></div>
