@@ -84,12 +84,6 @@ render(){
       <main >
         
         <Container className="text-center">
-        <Row>
-
-        <h1>
-          Brewery Finder 
-        </h1>
-        </Row>
         <small>neato</small>
         </Container>
         

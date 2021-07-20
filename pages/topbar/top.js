@@ -5,7 +5,7 @@ export default function top() {
 
 const router=useRouter()
     return (
-    <Navbar bg="dark" variant="dark" >
+    <Navbar bg="dark" variant="dark" sticky="top">
   <Container>
     <Navbar.Brand href="/">Beer Finder</Navbar.Brand>
     <Navbar.Toggle />
@@ -15,7 +15,8 @@ const router=useRouter()
         e.preventDefault()
         let searched=document.getElementById('search').value
         
-        router.push(`/search2/${searched}`)
+        router.push(`/search/${searched}`,null,{})
+        {/*USEEFFECT for same page search note to self*/}
       })}>
       <FormControl
         type="Search"
